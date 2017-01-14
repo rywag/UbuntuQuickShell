@@ -1,0 +1,99 @@
+#!/bin/bash
+#
+# This will install all packages and 
+# it will remove the guest user account 
+# 
+# Everything that should be installed 
+# after you have installed ubuntu on
+# your machine. Enjoy how easy it is
+# to have it all done for you!!
+#
+# Written by Ryan Wagner 2016
+
+echo "Hello "$USER", I am installing some programs now"
+sudo apt-get update
+sudo apt-get upgrade
+echo "deb http://download.virtualbox.org/virtualbox/debian $(lsb_release -sc) contrib" | sudo tee /etc/apt/sources.list.d/virtualbox.list
+wget -q http://download.virtualbox.org/virtualbox/debian/oracle_vbox_2016.asc -O- | sudo apt-key add -
+
+sudo apt-get update
+sudo apt-get install virtualbox-5.1
+
+echo "Where would you like the unity launcher? (b,t,r,l): "
+read location
+
+if (( "$location" == "b"))
+
+then
+     gsettings set com.canonical.Unity.Launcher launcher-position Bottom
+     
+elif (( "$location" == "t" ))
+
+then
+     gsettings set com.canonical.Unity.Launcher launcher-position Top
+     
+elif (( "$location" == "r" ))
+
+then
+     gsettings set com.canonical.Unity.Launcher launcher-position Right
+     
+elif (( "$location" == "l" ))
+
+then
+     gsettings set com.canonical.Unity.Launcher launcher-position Left
+
+fi
+
+echo "Would you like to have your desktop look like a mac? (y/n): "
+read Mac
+
+if (( "$Mac" == "y" ))
+
+then
+     sudo add-apt-repository ppa:docky-core/stable && apt-get update
+     sudo apt-get purge docky
+     sudo apt-get install docky
+     sudo add-apt-repository ppa:noobslab/macbuntu
+     sudo apt-get update
+     sudo apt-get install macbuntu-os-icons-lts-v7
+     sudo apt-get install macbuntu-os-ithemes-lts-v7
+     sudo add-apt-repository ppa:noobslab/macbuntu
+     sudo apt-get install slingscold
+     sudo apt-get install albert
+     sudo apt-get install plank
+     sudo apt-get install macbuntu-os-plank-theme-lts-v7
+     cd && wget -O Mac.po http://drive.noobslab.com/data/Mac/change-name-on-panel/mac.po
+     cd /usr/share/locale/en/LC_MESSAGES; sudo msgfmt -o unity.mo ~/Mac.po;rm ~/Mac.po;cd
+     wget -O launcher_bfb.png http://drive.noobslab.com/data/Mac/launcher-logo/apple/launcher_bfb.png
+     sudo mv launcher_bfb.png /usr/share/unity/icons/
+     sudo apt-get install unity-tweak-tool
+     sudo apt-get install gnome-tweak-tool
+     sudo apt-get install libreoffice-style-sifr
+     wget -O mac-fonts.zip http://drive.noobslab.com/data/Mac/macfonts.zip
+     sudo unzip mac-fonts.zip -d /usr/share/fonts; rm mac-fonts.zip
+     sudo fc-cache -f -v
+     echo "You will need to restart your computer to have all the changes take effect"
+     echo "You will need to use the unity-tweak-tool to set the apple font"
+     echo "You will also want to go to LibreOffice and set the style to Sifr"
+     echo "Use Ctrl + Right Click to set the context menu to the mac theme"
+
+fi
+
+gsettings set org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ launcher-minimize-window true
+gsettings set org.gnome.nautilus.preferences enable-interactive-search false
+gsettings set com.canonical.indicator.session show-real-name-on-panel true
+sudo apt-get install gimp gimp-data gimp-plugin-registry gimp-data-extras
+sudo apt-get install gufw
+echo "To configure your firewall search for GUFW to configure it"
+sudo apt-get install bleachbit
+echo "To keep things clean configure bleachbit"
+sudo apt-get install flashplugin-installer
+sudo apt-get install icedtea-8-plugin openjdk-8-jre
+sudo apt-get install ffmpeg gxine libdvdread4 icedax tagtool libdvd-pkg easytag id3tool lame libxine2-ffmpeg nautilus-script-audio-convert libmad0 mpg321 libavcodec-extra gstreamer1.0-libav
+
+
+echo "I'm all done now, I recommend going to software & updates to make sure all the latest drivers are installed"
+echo "Look under the additional drivers tab and make sure everything looks good."
+echo "Also go to the app store and install anything you would like to have as usual"
+echo "Have a great day, hope this code was a helpful one."
+echo "Please rate me and comment on github https://github.com/rywag"

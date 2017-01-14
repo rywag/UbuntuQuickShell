@@ -1,0 +1,25 @@
+#!/bin/bash
+
+echo "This will uninstall all the mac aspects from Ubuntu"
+echo "Would you like to continue? (y/n): "
+read Mac
+
+if (( "$Mac" == "y" ))
+
+then
+     cd /usr/share/icons/mac-cursors && sudo ./uninstall-mac-cursors.sh
+     sudo apt-get remove macbuntu-os-icons-lts-v7 macbuntu-os-ithemes-lts-v7
+     sudo apt-get remove slingscold
+     sudo apt-get remove albert
+     sudo apt-get autoremove plank macbuntu-os-plank-theme-lts-v7
+     cd && wget -O Ubuntu.po http://drive.noobslab.com/data/Mac/change-name-on-panel/ubuntu.po
+     cd /usr/share/locale/en/LC_MESSAGES; sudo msgfmt -o unity.mo ~/Ubuntu.po;rm ~/Ubuntu.po;cd
+     wget -O launcher_bfb.png http://drive.noobslab.com/data/Mac/launcher-logo/ubuntu/launcher_bfb.png
+     sudo mv launcher_bfb.png /usr/share/unity/icons/
+
+
+fi
+
+echo "You will need to use tweaktool to change the appearance theme"
+echo "and the libreOffice preferences will need to be changed back"
+echo "Thank you, Please reboot your computer and have a nice day!"
